@@ -1,59 +1,11 @@
 # Instalar y cargar las librerías necesarias
 install.packages("readxl")
-install.packages("writexl")
 library(readxl)
-library(writexl)
+
 
 # Cargar la hoja de Excel
-ruta_archivo <- "ruta/a/tu/archivo.xlsx"
-df <- read_excel(ruta_archivo)
+library(readxl)
+Leptospira <- read_excel("C:/Users/manue/Downloads/Leptospira.xlsx")
 
-# Crear una nueva columna combinada
-df$resultado_combinado <- apply(df[, c("pcr", "mat", "elisa")], 1, function(x) {
-  if ("positivo" %in% x) {
-    return("positivo")
-  } else {
-    return("negativo")
-  }
-})
 
-# Guardar el archivo modificado
-write_xlsx(df, "ruta/a/tu/archivo_modificado.xlsx")
 
-# Instalar y cargar la librería necesaria para manipular fechas
-install.packages("lubridate")
-library(lubridate)
-
-# Convertir la columna de fechas en un formato de fecha reconocible
-df$fecha <- dmy(df$fecha)  # Convierte la columna 'fecha' al formato de fecha
-
-# Crear la columna de mes y año
-df$mes <- month(df$fecha, label = TRUE, abbr = TRUE)  # Extrae el mes y lo muestra con abreviación
-df$anio <- year(df$fecha)  # Extrae el año
-
-# Guardar el archivo modificado
-write_xlsx(df, "ruta/a/tu/archivo_modificado.xlsx")
-
-# Instalar y cargar la librería stringr para manipulación de cadenas de texto
-install.packages("stringr")
-library(stringr)
-
-# Función para convertir las edades al formato numérico deseado
-convertir_edad <- function(edad) {
-  # Extraer años y meses
-  años <- as.numeric(str_extract(edad, "\\d+(?=años)"))
-  meses <- as.numeric(str_extract(edad, "\\d+(?=meses)"))
-  
-  # Convertir a formato numérico
-  años <- ifelse(is.na(años), 0, años)
-  meses <- ifelse(is.na(meses), 0, meses / 12)
-  
-  # Sumar años y meses
-  return(años + meses)
-}
-
-# Aplicar la función a la columna 'edad'
-df$edad_numerica <- sapply(df$edad, convertir_edad)
-
-# Guardar el archivo modificado
-write_xlsx(df, "ruta/a/tu/archivo_modificado.xlsx")
