@@ -39,12 +39,11 @@ Identificare y analisare tendencia en los datos obtenidos de la veterinaria sobr
 Hay un unico archivo de excel con la inforacion obtenida durante septiembre del 2020 a junio del 2021. El archivo incluye 10 columnas con los siguientes nombres NOMBRE, SEXO, EDAD, EDAD, RAZA, VACUNACION,  FECHA, ZONA, MAT, ELISA y PCR.
 
 ## Data exploration
-El archivo fue cargado como una tabla. Explorar los datos me permitio darme cuenta que la columna EDAD deberia esatr en formato numerico pero esta en formato caracter. Tambien la columna FECHA deberia estar en formato fecha pero esta en formato caracter. Ademas se necesita crear dos nuevas columnas una con el año en que se tomo la muestra y otra con el mes en que se tomo la muestra. Asi mismo las columnas MAT, ELISA y PCR representan las distintas pruebas que se realizaron para saber si los perros estabn enfermos de leptospirosis, asi que se necesita combinar los resultados de las tres columnas y tambien solo hay que remplazar uno de los dos posibles resultados "neg" por "negativo".
+El archivo fue cargado como una tabla. Explorar los datos me permitio darme cuenta que la columna EDAD deberia esatr en formato numerico pero esta en formato caracter. Tambien la columna FECHA sera dividida en dos columnas nuevas una con el AÑO en que se tomo la muestra y otra con el MES en que se tomo la muestra. Asi mismo las columnas MAT, ELISA y PCR representan las distintas pruebas que se realizaron para saber si los perros estabn enfermos de leptospirosis, asi que se necesita combinar los resultados de las tres columnas y tambien solo hay que remplazar uno de los dos posibles resultados "neg" por "negativo". No hay valores faltantes o duplicados.
 
 ## Data Cleaning
 
 - El formato de la columna EDAD fue cambiado de caracter a numeric
-- EL formato de la columna FECHA fue cambiado de caracter a fecha
 - Tres columnas fueron creadas AÑO, MES y RESULTADO 
 
 
