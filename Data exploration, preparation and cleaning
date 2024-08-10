@@ -1,0 +1,53 @@
+#librerias que se utilizaran
+install.packages("skimr")
+install.packages("writexl")
+install.packages("lubridate")
+install.packages("stringr")
+library(skimr)
+library(writexl)
+library(lubridate)
+library(stringr)
+
+#Revisar en los formatos de las columnas 
+skim_without_charts(Leptospira)
+
+#Crear las columnas AÑO y MES 
+
+Leptospira$MES <- month(Leptospira$FECHA, label = TRUE, abbr = TRUE) 
+Leptospira$AÑO <- year(Leptospira$FECHA) 
+
+#BORRAR la columna FECHA
+Leptospira$FECHA <- NULL
+
+#Crear columna combinada con los resultados de las columnas PCR, MAT y ELISA
+Leptospira$RESULTADO <- apply(Leptospira[, c("PCR", "MAT", "ELISA")], 1, function(x) {
+     if ("positivo" %in% x) {
+         return("positivo")
+     } else {
+         return("negativo")
+     }
+ })
+
+#BORRAR la columna PCR; MAT y ELISA
+Leptospira <- Leptospira[, !(names(Leptospira) %in% c("PCR", "MAT", "ELISA"))]
+
+# Función para convertir las edades al formato numérico deseado
+convertir_edad <- function(edad) {
+  # Extraer años y meses
+  años <- as.numeric(str_extract(edad, "\\d+(?=años)"))
+  meses <- as.numeric(str_extract(edad, "\\d+(?=meses)"))
+  
+  # Convertir a formato numérico
+  años <- ifelse(is.na(años), 0, años)
+  meses <- ifelse(is.na(meses), 0, meses / 10)  # Divide entre 10 para agregarlo como decimal
+  
+  # Sumar años y meses
+  return(años + meses)
+}
+
+# Crear una nueva columna 'EDAD_CORREGIDA' con los valores corregidos
+Leptospira$EDAD <- sapply(Leptospira$EDAD, convertir_edad)
+
+
+#Guardad el archivo
+write_xlsx(Leptospira, "C:/Users/manue/Downloads/Leptospira_Clean.xlsx")
