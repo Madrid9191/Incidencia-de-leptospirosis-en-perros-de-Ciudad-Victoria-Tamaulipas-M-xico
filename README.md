@@ -43,8 +43,15 @@ El archivo fue cargado como una tabla. Explorar los datos me permitio darme cuen
 
 ## Data Cleaning
 
-- El formato de la columna EDAD fue cambiado de caracter a numeric
-- Tres columnas fueron creadas AÑO, MES y RESULTADO 
+- El formato de la columna EDAD fue cambiado de caracter a numerico
+- Tres columnas fueron creadas AÑO, MES y RESULTADO
+- Las columnas FECHA, MAT, ELISA y PCR fueron borradas
+- No hay datos faltantes ni duplicados
+
+### Analyze and share
+
+R Query:
+Data Visualization:
 
 
 
