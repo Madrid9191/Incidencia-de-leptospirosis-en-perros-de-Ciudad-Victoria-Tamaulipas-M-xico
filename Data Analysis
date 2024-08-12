@@ -1,6 +1,92 @@
 #Librerias
+install.packages("sqldf")
+install.packages("writexl")
+install.packages("readxl")
+library(sqldf)
+library(writexl)
 library(readxl)
 
-
+#Calcular la incidencia general de Leptospira spp.
 # Cargar archivo
 Leptospira_Clean <- read_excel("C:/Users/manue/Downloads/Leptospira_Clean.xlsx")
+
+# Contar los casos positivos en la columna RESULTADO
+num_positivos <- sum(Leptospira_Clean$RESULTADO == "positivo")
+
+# Dividimos por 121 y multiplicamos por 100
+resultado_final <- (num_positivos / 121) * 100
+
+# Resultado de la Incidencia general
+print(resultado_final)
+
+#Incidencia por mes
+# Filtrar los casos positivos por mes
+positivos <- Leptospira_Clean %>% filter(RESULTADO == "positivo")
+
+# Contar la cantidad de casos positivos por mes
+casos_por_mes <- positivos %>%
+     group_by(MES) %>%
+     summarise(casos_positivos = n())
+ 
+# Calcular el porcentaje de casos positivos por mes
+ casos_por_mes <- casos_por_mes %>%
+     mutate(incidencia = (casos_positivos / 121) * 100)
+ 
+ # Mostrar el resultado final
+ print(casos_por_mes)
+
+#Consultas SQL
+
+# Consulta SQL para contar los casos positivos según el sexo
+consulta_sexo <- sqldf("SELECT SEXO, COUNT(*) as casos_positivos
+                         FROM Leptospira_Clean
+                         WHERE RESULTADO = 'positivo'
+                         GROUP BY SEXO")
+# Guardar la consulta en un archivo Excel
+write_xlsx(consulta_sexo, "C:/Users/manue/Downloads/SEXO.xlsx")
+
+#Consulta SQL para contar los casos positivos por zona(colonia)
+consulta_zona <- sqldf("SELECT ZONA, COUNT(*) as casos_positivos
+                         FROM Leptospira_Clean
+                         WHERE RESULTADO = 'positivo'
+                         GROUP BY ZONA")
+# Guardar la consulta en un archivo Excel
+write_xlsx(consulta_zona, "C:/Users/manue/Downloads/ZONA.xlsx")
+
+
+#Consulta SQL para contar los casos positivos por su estatus de vacunacion  
+consulta_vacunacion <- sqldf("SELECT VACUNACION, COUNT(*) as casos_positivos
+                         FROM Leptospira_Clean
+                         WHERE RESULTADO = 'positivo'
+                         GROUP BY VACUNACION")
+
+# Guardar la consulta en un archivo Excel
+write_xlsx(consulta_vacunacion, "C:/Users/manue/Downloads/VACUNACION.xlsx")
+
+#Consulta SQL para contar los casos positivos por raza  
+consulta_raza <- sqldf("SELECT RAZA, COUNT(*) as casos_positivos
+                         FROM Leptospira_Clean
+                         WHERE RESULTADO = 'positivo'
+                         GROUP BY RAZA")
+
+# Guardar la consulta en un archivo Excel
+write_xlsx(consulta_raza, "C:/Users/manue/Downloads/RAZA.xlsx")
+
+# Guardar la consulta en un archivo Excel
+write_xlsx(consulta_vacunacion, "C:/Users/manue/Downloads/VACUNACION.xlsx")
+
+#Consulta SQL para contar los casos positivos por edad  
+consulta_edad <- sqldf("SELECT EDAD, COUNT(*) as casos_positivos
+                         FROM Leptospira_Clean
+                         WHERE RESULTADO = 'positivo'
+                         GROUP BY EDAD")
+
+# Guardar la consulta en un archivo Excel
+write_xlsx(consulta_edad, "C:/Users/manue/Downloads/EDAD.xlsx")
+
+
+
+
+
+
+
