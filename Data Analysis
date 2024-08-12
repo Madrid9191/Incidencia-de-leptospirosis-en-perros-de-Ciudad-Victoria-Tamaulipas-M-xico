@@ -1,0 +1,6 @@
+#Librerias
+library(readxl)
+
+
+# Cargar archivo
+Leptospira_Clean <- read_excel("C:/Users/manue/Downloads/Leptospira_Clean.xlsx")
