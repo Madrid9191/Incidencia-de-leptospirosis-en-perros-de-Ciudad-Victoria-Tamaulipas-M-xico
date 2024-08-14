@@ -33,19 +33,24 @@ Leptospira <- Leptospira[, !(names(Leptospira) %in% c("PCR", "MAT", "ELISA"))]
 
 # Función para convertir las edades al formato numérico deseado
 convertir_edad <- function(edad) {
-  # Extraer años y meses
-  años <- as.numeric(str_extract(edad, "\\d+(?=años)"))
-  meses <- as.numeric(str_extract(edad, "\\d+(?=meses)"))
+  # Extraer los años
+  años <- as.numeric(gsub(".*?(\\d+)años?.*", "\\1", edad))
+  años[is.na(años)] <- 0
   
-  # Convertir a formato numérico
-  años <- ifelse(is.na(años), 0, años)
-  meses <- ifelse(is.na(meses), 0, meses / 10)  # Divide entre 10 para agregarlo como decimal
+  # Extraer los meses
+  meses <- as.numeric(gsub(".*?(\\d+)meses?.*", "\\1", edad))
+  meses[is.na(meses)] <- 0
   
-  # Sumar años y meses
-  return(años + meses)
+  # Si hay meses, convertirlos a formato decimal directo
+  meses_decimal <- ifelse(meses > 0, meses / 10, 0)
+  
+  # Calcular la edad en formato decimal
+  edad_decimal <- años + meses_decimal
+  
+  return(edad_decimal)
 }
 
-# Crear una nueva columna 'EDAD_CORREGIDA' con los valores corregidos
+# Aplicar la función a la columna EDAD
 Leptospira$EDAD <- sapply(Leptospira$EDAD, convertir_edad)
 
 
